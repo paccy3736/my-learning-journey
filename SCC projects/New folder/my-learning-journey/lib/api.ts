@@ -1,25 +1,25 @@
-const BASE_URL = "https://sms-express-app-1-production-a843.up.railway.app/api";
+const BASE_URL = "https://sms-express-app-1-production-a843.up.railway.app/api/stories";
 
 export interface Story {
-  _id: string;
-  title: string;
-  content: string;
+  id: string;
   authorName: string;
+  content: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreateStoryDTO {
-  title: string;
-  content: string;
   authorName: string;
+  content: string;
 }
 
-// GET ALL
+// GET ALL — response is { value: Story[], Count: number }
 export const getAllStories = async (): Promise<Story[]> => {
   const res = await fetch(BASE_URL, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch stories");
-  return res.json();
+  const data = await res.json();
+  // API returns { value: [...], Count: n }
+  return Array.isArray(data) ? data : (data.value ?? []);
 };
 
 // GET ONE

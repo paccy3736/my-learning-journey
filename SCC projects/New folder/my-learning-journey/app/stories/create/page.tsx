@@ -6,7 +6,7 @@ import { createStory } from "@/lib/api";
 
 export default function CreateStoryPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ title: "", content: "", authorName: "" });
+  const [form, setForm] = useState({ authorName: "", content: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -50,30 +50,16 @@ export default function CreateStoryPage() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <label htmlFor="title" className="text-sm font-medium text-slate-700">
-            Title <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="title"
-            name="title"
-            placeholder="Give your story a title"
-            value={form.title}
-            onChange={handleChange}
-            required
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1">
           <label htmlFor="authorName" className="text-sm font-medium text-slate-700">
-            Author
+            Author <span className="text-red-500">*</span>
           </label>
           <input
             id="authorName"
             name="authorName"
-            placeholder="Your name (optional)"
+            placeholder="Your name"
             value={form.authorName}
             onChange={handleChange}
+            required
             className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>

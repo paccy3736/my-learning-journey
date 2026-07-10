@@ -48,17 +48,14 @@ export default function StoryDetailPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
-      <Link
-        href="/stories"
-        className="mb-6 inline-block text-sm text-slate-500 hover:text-blue-600 transition-colors"
-      >
+      <Link href="/stories" className="mb-6 inline-block text-sm text-slate-500 hover:text-blue-600 transition-colors">
         ← All stories
       </Link>
 
       <article className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="text-3xl font-bold text-slate-900">{story.title}</h1>
+        <h1 className="text-3xl font-bold text-slate-900">{story.authorName}</h1>
         <p className="mt-2 text-sm text-slate-500">
-          By {story.authorName} · {new Date(story.createdAt).toLocaleDateString()}
+          {new Date(story.createdAt).toLocaleDateString()}
           {story.updatedAt !== story.createdAt && (
             <> · Edited {new Date(story.updatedAt).toLocaleDateString()}</>
           )}
@@ -72,7 +69,7 @@ export default function StoryDetailPage() {
 
       <div className="mt-4 flex gap-3">
         <Link
-          href={`/stories/${story._id}/edit`}
+          href={`/stories/${story.id}/edit`}
           className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
         >
           Edit
