@@ -49,6 +49,20 @@ export default function Home() {
               Building more polished projects and sharing what I learn with others.
             </p>
           </div>
+          <Link
+            href="/stories"
+            className="group col-span-full rounded-xl border border-blue-100 bg-blue-50 p-6 shadow-sm transition hover:shadow-md hover:border-blue-300"
+          >
+            <h2 className="text-lg font-bold text-slate-900 group-hover:text-blue-600">
+              Stories
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Read, write, edit and delete stories — a live CRUD feature built into this site.
+            </p>
+            <span className="mt-3 inline-block text-sm font-semibold text-blue-600">
+              Go to Stories →
+            </span>
+          </Link>
         </div>
       </section>
     </div>
