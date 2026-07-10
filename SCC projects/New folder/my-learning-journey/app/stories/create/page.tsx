@@ -6,7 +6,7 @@ import { createStory } from "@/lib/api";
 
 export default function CreateStoryPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ title: "", content: "", author: "" });
+  const [form, setForm] = useState({ title: "", content: "", authorName: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -65,24 +65,21 @@ export default function CreateStoryPage() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="author" className="text-sm font-medium text-slate-700">
+          <label htmlFor="authorName" className="text-sm font-medium text-slate-700">
             Author
           </label>
           <input
-            id="author"
-            name="author"
+            id="authorName"
+            name="authorName"
             placeholder="Your name (optional)"
-            value={form.author}
+            value={form.authorName}
             onChange={handleChange}
             className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col gap-1">
-          <label
-            htmlFor="content"
-            className="text-sm font-medium text-slate-700"
-          >
+          <label htmlFor="content" className="text-sm font-medium text-slate-700">
             Content <span className="text-red-500">*</span>
           </label>
           <textarea

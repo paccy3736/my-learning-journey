@@ -7,7 +7,7 @@ import { getStory, updateStory } from "@/lib/api";
 export default function EditStoryPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [form, setForm] = useState({ title: "", content: "", author: "" });
+  const [form, setForm] = useState({ title: "", content: "", authorName: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +21,7 @@ export default function EditStoryPage() {
         setForm({
           title: story.title,
           content: story.content,
-          author: story.author,
+          authorName: story.authorName,
         });
       }
       setLoading(false);
@@ -49,19 +49,11 @@ export default function EditStoryPage() {
   };
 
   if (loading) {
-    return (
-      <div className="mx-auto max-w-xl px-4 py-10 text-slate-500">
-        Loading...
-      </div>
-    );
+    return <div className="mx-auto max-w-xl px-4 py-10 text-slate-500">Loading...</div>;
   }
 
   if (notFound) {
-    return (
-      <div className="mx-auto max-w-xl px-4 py-10">
-        <p className="text-slate-500">Story not found.</p>
-      </div>
-    );
+    return <div className="mx-auto max-w-xl px-4 py-10"><p className="text-slate-500">Story not found.</p></div>;
   }
 
   return (
@@ -77,9 +69,7 @@ export default function EditStoryPage() {
       </div>
 
       {error && (
-        <p className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
-          {error}
-        </p>
+        <p className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -98,23 +88,20 @@ export default function EditStoryPage() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="author" className="text-sm font-medium text-slate-700">
+          <label htmlFor="authorName" className="text-sm font-medium text-slate-700">
             Author
           </label>
           <input
-            id="author"
-            name="author"
-            value={form.author}
+            id="authorName"
+            name="authorName"
+            value={form.authorName}
             onChange={handleChange}
             className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col gap-1">
-          <label
-            htmlFor="content"
-            className="text-sm font-medium text-slate-700"
-          >
+          <label htmlFor="content" className="text-sm font-medium text-slate-700">
             Content <span className="text-red-500">*</span>
           </label>
           <textarea

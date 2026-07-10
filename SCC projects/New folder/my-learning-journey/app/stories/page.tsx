@@ -7,13 +7,20 @@ import { getAllStories, deleteStory, type Story } from "@/lib/api";
 export default function StoriesPage() {
   const [stories, setStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const fetchStories = async () => {
     setLoading(true);
-    const data = await getAllStories();
-    setStories(data);
-    setLoading(false);
+    setError("");
+    try {
+      const data = await getAllStories();
+      setStories(data);
+    } catch {
+      setError("Could not load stories. Check your connection.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -23,9 +30,14 @@ export default function StoriesPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this story? This cannot be undone.")) return;
     setDeletingId(id);
-    await deleteStory(id);
-    await fetchStories();
-    setDeletingId(null);
+    try {
+      await deleteStory(id);
+      await fetchStories();
+    } catch {
+      alert("Failed to delete story.");
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   return (
@@ -44,7 +56,11 @@ export default function StoriesPage() {
         <p className="text-slate-500">Loading stories...</p>
       )}
 
-      {!loading && stories.length === 0 && (
+      {error && (
+        <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>
+      )}
+
+      {!loading && !error && stories.length === 0 && (
         <div className="rounded-xl border border-dashed border-slate-300 px-6 py-14 text-center">
           <p className="text-slate-500">No stories yet.</p>
           <Link
@@ -59,19 +75,19 @@ export default function StoriesPage() {
       <ul className="flex flex-col gap-4">
         {stories.map((story) => (
           <li
-            key={story.id}
+            key={story._id}
             className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
                 <Link
-                  href={`/stories/${story.id}`}
+                  href={`/stories/${story._id}`}
                   className="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors line-clamp-1"
                 >
                   {story.title}
                 </Link>
                 <p className="mt-1 text-xs text-slate-500">
-                  By {story.author} ·{" "}
+                  By {story.authorName} ·{" "}
                   {new Date(story.createdAt).toLocaleDateString()}
                 </p>
                 <p className="mt-2 text-sm text-slate-600 line-clamp-2">
@@ -81,17 +97,17 @@ export default function StoriesPage() {
 
               <div className="flex shrink-0 gap-2">
                 <Link
-                  href={`/stories/${story.id}/edit`}
+                  href={`/stories/${story._id}/edit`}
                   className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-blue-300 hover:text-blue-600"
                 >
                   Edit
                 </Link>
                 <button
-                  onClick={() => handleDelete(story.id)}
-                  disabled={deletingId === story.id}
+                  onClick={() => handleDelete(story._id)}
+                  disabled={deletingId === story._id}
                   className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-red-500 transition hover:border-red-300 hover:bg-red-50 disabled:opacity-50"
                 >
-                  {deletingId === story.id ? "..." : "Delete"}
+                  {deletingId === story._id ? "..." : "Delete"}
                 </button>
               </div>
             </div>
